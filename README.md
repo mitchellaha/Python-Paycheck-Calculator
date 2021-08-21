@@ -9,4 +9,3 @@ Simple Paycheck Calculator Written in Python.
 
 ### Assumptions
 - Assumes Overtime Is Time and a Half Hourly Pay after 40 Hours
-- Assumes You'll *Never* Work Less Than .05 Hours Of Overtime
