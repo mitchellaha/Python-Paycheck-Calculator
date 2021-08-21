@@ -1,45 +1,22 @@
 
+payRate = float(input("Enter Hourly Rate Of Pay: "))
+hours = float(input("Enter Hours Worked: "))
+taxPer = input("Enter Tax Amount As a Percentage: ")
 
-print("Enter Hourly Rate Of Pay:")
-payRate = float(input())
+otRate = payRate / 2 + payRate          # Assumes Overtime is Time and a Half
+otHours = hours - 40                    # Math For Overtime / Anything Over 40 Hours Is Overtime
 
+def tax(taxPer):                             # Removed The Percentage Symbol If It Was Included
+    return float(taxPer.strip('%'))/100
+def pay(hours, payRate):                                        # Pay Function
+    if hours > 40:
+        return float((40 * payRate) + (otHours * otRate))       # If There Is Overtime then Calculate The Pay (40*HR)+(OT*(HR/2)+HR)
+    else:
+        return float(hours * payRate)                           # If No Overtime Then Just Do The Regular HR*Rate
 
-print('Enter Hours Worked: ')
-hours = float(input())
+taxedAmount = pay(hours, payRate) * tax(taxPer)
+afterTaxPay = pay(hours, payRate) - taxedAmount
 
-
-print("Enter Tax Amount As a Percentage:")
-taxPer = input()
-
-def tax(X):
-    return float(X.strip('%'))/100      # Lets Just Put This Here So Our Taxes Are Together
-
-
-otRate = payRate / 2 + payRate          #Assumes Overtime is Time and a Half
-
-
-if hours > 40:
-    otHours = hours - 40
-    hours = 40
-else:
-    otHours = .001                      # If Time Isnt Over 40 Then Set otHours to .001
-
-
-payCalc = hours * payRate               # Hours Worked Multiplied By Pay Rate
-otCalc = otHours * otRate               # Overtime Hours Multiplied By Overtime Rate
-
-
-if otHours >= .05:                      # If there no overtime then otHours is set to .001 so jump to else
-    pay = otCalc + payCalc
-else:
-    pay = payCalc
-
-
-taxedAmount = pay * tax(taxPer)
-afterTaxPay = pay - taxedAmount
-
-print("")                                                       # Nice Little Terminal Break
-print("Pay Before Taxes: $", pay)
-print("Tax Amount Deducted From Pay: $", taxedAmount)
-print("Your TakeHome Pay is: $", afterTaxPay)
-print("")                                                       # Another Nice Little Terminal Break
+print("\n", "Before Taxes:  $", pay(hours, payRate))
+print(" Tax Deduction: $", taxedAmount)
+print(" After Taxes:   $", afterTaxPay, "\n")
