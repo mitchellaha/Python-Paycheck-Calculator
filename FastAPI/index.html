@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paycheck Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+<body>
+<!-- main api endpoint : /main/ -->
+<!-- Input Hourly Pay, Tax Rate, and Hours Worked -->
+<!-- Send as Query Request -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Paycheck Calculator</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/main/" method="GET" id="mainPay">
+                    <div class="form-group">
+                        <label for="hourly_rate">Hourly Pay</label>
+                        <input type="text" class="form-control" id="hourly_rate" name="hourly_rate" placeholder="Enter hourly pay">
+                    </div>
+                    <div class="form-group">
+                        <label for="tax_rate">Tax Rate</label>
+                        <input type="text" class="form-control" id="tax_rate" name="tax_rate" placeholder="Enter tax rate">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours">Hours Worked</label>
+                        <input type="text" class="form-control" id="hours" name="hours" placeholder="Enter hours worked">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div id="result"></div>
+    </div>
+    <!-- On Button Submit send the get request as query param and show the json response on current page -->
+    <script>
+        var hourly_rate = document.getElementById('hourly_rate');
+        var tax_rate = document.getElementById('tax_rate');
+        var hours = document.getElementById('hours');
+
+        document.getElementById('mainPay').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var hourly_rate = document.getElementById('hourly_rate').value;
+            var tax_rate = document.getElementById('tax_rate').value;
+            var hours = document.getElementById('hours').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/main/?hourly_rate=' + hourly_rate + '&tax_rate=' + tax_rate + '&hours=' + hours, true);
+            xhr.onload = function() {
+                var response = JSON.parse(xhr.responseText);
+                var grossPay = response.grossPay;
+                var tax = response.taxDeduct;
+                var netPay = response.netPay;
+                var result = document.getElementById('result');
+                result.innerHTML = '<div class="alert alert-success" role="alert">' +
+                    '<h4 class="alert-heading">Net Pay: $' + netPay + '</h4>' +
+                    '<p>Tax Deduct: $' + tax + '</p>' +
+                    '<p>Gross Pay: $' + grossPay + '</p>' +
+                    '</div>';
+                document.getElementById('result').innerHTML = html;
+            };
+            xhr.send();
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
